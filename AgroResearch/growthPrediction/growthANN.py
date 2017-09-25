@@ -13,11 +13,11 @@ def growthPredicion (ldrValue, temp, humidity):
 
     # Mean value for the growth
     # Sample values are given for the testing purposes
-    averageGrowth = 0.0001
-    averageHumidity = 80
+    averageGrowth = 1.29
+    averageHumidity = 77
     averageTemp= 24
-    averageLight = 5
-
+    averageLight = 1500
+    print("hello")
     # keep the record about the amount of harmful enviroment changes occur
     effectCount = 0
     effectCountLight = 0
@@ -28,9 +28,11 @@ def growthPredicion (ldrValue, temp, humidity):
     effectCountHumidityLow = 0
     effectCountTempLow = 0
 
-    actualGrowthCalculated = 1.2
+    actualGrowthCalculated = 1
 
-    try:
+    a=0
+    #try:
+    if(a==0):
         def nonlinear(facts, derive = False):
             if(derive == True):
                 return facts*(1-facts)
@@ -40,7 +42,8 @@ def growthPredicion (ldrValue, temp, humidity):
 
         # Readings of the sensors are give as input using the array
         # sunlight, temperature, humidity respectively
-        facts = pckg.array([ lightReading, temperatureReading, humidityReading ])
+        facts = pckg.array([[ lightReading, temperatureReading, humidityReading ]])
+
                            #[6.20,29,81.2],
                            #[6.59,27.5,81.6],
                            #[5.87,28,82] ])
@@ -48,7 +51,8 @@ def growthPredicion (ldrValue, temp, humidity):
         # Expected output after processing
         # Values taken by monitoring growth of plants
 
-        output = pckg.array([ actualGrowthCalculated ])
+        output = pckg.array([[ actualGrowthCalculated ]]).T
+
                               #[0.001531],
                               #[0.001100],
                               #[0.001011] ])
@@ -56,11 +60,11 @@ def growthPredicion (ldrValue, temp, humidity):
         pckg.random.seed(1)
 
         # Initialize weights randomly with a mean of 0
-        weight1 = 2*pckg.random.random((3,1))-1
-        weight2 = 2*pckg.random.random((1,1))-1
+        weight1 = 2*pckg.random.random((3,4))-1
+        weight2 = 2*pckg.random.random((4,1))-1
 
         # feed forward for all layers
-        for i in range(600000):
+        for i in range(60000):
 
             layer0 = facts;
             layer1 = nonlinear(pckg.dot(layer0,weight1))
@@ -70,11 +74,11 @@ def growthPredicion (ldrValue, temp, humidity):
             # Difference between real value and predicted value
             layer2Error = output-layer2
 
-            if (layer2Error [0]) != 0 and (layer2Error[0]) >= 0.00000001:
+            if (layer2Error [0]) != 0 and (layer2Error[0]) >= 0.0001:
                 # Print the amount of error when it satisfies the condition
 
-                if(i % 100000) == 0:
-                    print ("Error" + str(pckg.mean(pckg.abs(layer2Error))))
+                '''if(i % 100000) == 0:
+                    print ("Error" + str(pckg.mean(pckg.abs(layer2Error))))'''
 
                 layer2Value = layer2Error*nonlinear(layer2,derive = True)
 
@@ -88,10 +92,10 @@ def growthPredicion (ldrValue, temp, humidity):
                 weight2 += layer1.T.dot(layer2Value)
                 weight1 += layer0.T.dot(layer1Value)
 
-        print (layer2)
+        print ("layer twoo  ", layer2)
 
         # if predicted value is not greater than the average growth keep a record by increasing effectCount
-        if layer2[1] < averageGrowth:
+        '''if (layer2[0] < averageGrowth) or (layer2[0] > averageGrowth):
             effectCount += 1
 
             # if effecCount is equal or greater than 3 checks which factor causes the effect to make the warning
@@ -197,13 +201,13 @@ def growthPredicion (ldrValue, temp, humidity):
                             continue
 
                         effectCountHumidity = 0
-                        effectCount = 0
+                        effectCount = 0 '''
 
-    except:
+    '''except:
         print ("Error occured in taking readings")
-        print ("Sun light :" + lightReading)
-        print("Humidity :" + humidityReading)
-        print("Temperature :" + temperatureReading)
+        print ("Sun light :", lightReading)
+        print("Humidity :", humidityReading)
+        print("Temperature :", temperatureReading)
 
         #
         # Sound the alarm for high humidity
@@ -212,7 +216,7 @@ def growthPredicion (ldrValue, temp, humidity):
         pygame.mixer.music.load("../audioFile/Error_sensor_readings.wav")
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
-            continue
+            continue'''
 
 
 
