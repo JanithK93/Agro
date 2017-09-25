@@ -5,7 +5,6 @@ import pygame
 #from ..growthPrediction import play_audio as play
 
 def growthPredicion (ldrValue, temp, humidity):
-    currentTime = time.strftime("%H %M")
 
     # assign parameter values
     lightReading = ldrValue
@@ -29,13 +28,9 @@ def growthPredicion (ldrValue, temp, humidity):
     effectCountHumidityLow = 0
     effectCountTempLow = 0
 
+    actualGrowthCalculated = 1.2
 
-    # Run the application in give periods
-    #if currentTime== "08 00" or currentTime== "11 00" or currentTime== "13 00" or currentTime== "16 00" or currentTime== "19 00" or currentTime== "22 00" or currentTime== "01 00" \
-           # or currentTime == "04 00" :
-
-    if currentTime == currentTime: # just for the testing purposes
-
+    try:
         def nonlinear(facts, derive = False):
             if(derive == True):
                 return facts*(1-facts)
@@ -45,24 +40,24 @@ def growthPredicion (ldrValue, temp, humidity):
 
         # Readings of the sensors are give as input using the array
         # sunlight, temperature, humidity respectively
-        facts = pckg.array([ [5.40,28,81],
-                           [6.20,29,81.2],
-                           [6.59,27.5,81.6],
-                           [5.87,28,82] ])
+        facts = pckg.array([ lightReading, temperatureReading, humidityReading ])
+                           #[6.20,29,81.2],
+                           #[6.59,27.5,81.6],
+                           #[5.87,28,82] ])
 
         # Expected output after processing
         # Values taken by monitoring growth of plants
 
-        output = pckg.array([ [0.001029],
-                              [0.001531],
-                              [0.001100],
-                              [0.001011] ])
+        output = pckg.array([ actualGrowthCalculated ])
+                              #[0.001531],
+                              #[0.001100],
+                              #[0.001011] ])
 
         pckg.random.seed(1)
 
         # Initialize weights randomly with a mean of 0
-        weight1 = 2*pckg.random.random((3,4))-1
-        weight2 = 2*pckg.random.random((4,1))-1
+        weight1 = 2*pckg.random.random((3,1))-1
+        weight2 = 2*pckg.random.random((1,1))-1
 
         # feed forward for all layers
         for i in range(600000):
@@ -75,7 +70,7 @@ def growthPredicion (ldrValue, temp, humidity):
             # Difference between real value and predicted value
             layer2Error = output-layer2
 
-            if (layer2Error [0]) != 0 and (layer2Error[0]) >= 0.000000000001:
+            if (layer2Error [0]) != 0 and (layer2Error[0]) >= 0.00000001:
                 # Print the amount of error when it satisfies the condition
 
                 if(i % 100000) == 0:
@@ -89,6 +84,7 @@ def growthPredicion (ldrValue, temp, humidity):
 
                 layer1Value = layer1Error*nonlinear(layer1, derive = True)
 
+                # updating weights to reduce the error
                 weight2 += layer1.T.dot(layer2Value)
                 weight1 += layer0.T.dot(layer1Value)
 
@@ -111,7 +107,7 @@ def growthPredicion (ldrValue, temp, humidity):
                     # sound the alarm
                     if effectCountLight >= 3:
                         #
-                        # Sound the alarm as necessary
+                        # Sound the alarm for high intensity
                         #
                         pygame.mixer.init()
                         pygame.mixer.music.load("../audioFile/Sun_light_intensity_is_high.wav")
@@ -128,7 +124,7 @@ def growthPredicion (ldrValue, temp, humidity):
                     # sound the alarm
                     if effectCountLightLow >= 3:
                         #
-                        # Sound the alarm as necessary
+                        # Sound the alarm for low intensity
                         #
                         pygame.mixer.init()
                         pygame.mixer.music.load("../audioFile/Sun_light_intensity_is_low.wav")
@@ -144,7 +140,7 @@ def growthPredicion (ldrValue, temp, humidity):
 
                     if effectCountTemp >= 3:
                         #
-                        # Sound the alarm as necessary
+                        # Sound the alarm for high temperature
                         #
                         pygame.mixer.init()
                         pygame.mixer.music.load("../audioFile/Temperature_is_high.wav")
@@ -160,7 +156,7 @@ def growthPredicion (ldrValue, temp, humidity):
 
                     if effectCountTempLow >= 3:
                         #
-                        # Sound the alarm as necessary
+                        # Sound the alarm for low temperature
                         #
                         pygame.mixer.init()
                         pygame.mixer.music.load("../audioFile/Temperature_is_Low.wav")
@@ -176,7 +172,7 @@ def growthPredicion (ldrValue, temp, humidity):
 
                     if effectCountHumidity >= 3:
                         #
-                        # Sound the alarm as necessary
+                        # Sound the alarm for high humidity
                         #
                         pygame.mixer.init()
                         pygame.mixer.music.load("../audioFile/Humidity_is_high.wav")
@@ -192,7 +188,7 @@ def growthPredicion (ldrValue, temp, humidity):
 
                     if effectCountHumidityLow >= 3:
                         #
-                        # Sound the alarm as necessary
+                        # Sound the alarm for lo humidity
                         #
                         pygame.mixer.init()
                         pygame.mixer.music.load("../audioFile/Humidity_is_low.wav")
@@ -203,8 +199,20 @@ def growthPredicion (ldrValue, temp, humidity):
                         effectCountHumidity = 0
                         effectCount = 0
 
+    except:
+        print ("Error occured in taking readings")
+        print ("Sun light :" + lightReading)
+        print("Humidity :" + humidityReading)
+        print("Temperature :" + temperatureReading)
 
-
+        #
+        # Sound the alarm for high humidity
+        #
+        pygame.mixer.init()
+        pygame.mixer.music.load("../audioFile/Error_sensor_readings.wav")
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            continue
 
 
 
