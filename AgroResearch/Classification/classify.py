@@ -133,5 +133,7 @@ class Neural_Network(object):
 
 NN = Neural_Network()
 NN.predict()
+value =0
+print value
 
 
