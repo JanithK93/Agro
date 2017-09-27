@@ -93,6 +93,7 @@ def growthPredicion (ldrValue, temp, humidity):
                 weight2 += layer1.T.dot(layer2Value)
                 weight1 += layer0.T.dot(layer1Value)
         chkVal = layer2[0]
+        qq=0
         print ("Predicted Value:  ", math.ceil(int(chkVal)))
 
         # if predicted value is not greater than the average growth keep a record by increasing effectCount
