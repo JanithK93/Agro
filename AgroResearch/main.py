@@ -19,14 +19,10 @@ if currentTime== "08 00" or currentTime== "11 00" or currentTime== "13 00" or cu
 
     #call the growthPredicion method in growthANN
     #pass the sensor readings
-'''ldrValue = 1558
+ldrValue = 1558
 temp = 27
-humidity =78'''
-ldrValue = getLDR()
-array=[]
-array = getTempHumReadings()
-temp = array[0]
-humidity = array[1]
+humidity =78
+
 growthPredicions(ldrValue, temp, humidity)
 
 
