@@ -5,7 +5,7 @@ import pygame
 
 #from ..growthPrediction import play_audio as play
 
-def growthPredicion (ldrValue, temp, humidity):
+def growthPredicions (ldrValue, temp, humidity):
 
     # assign parameter values
     lightReading = ldrValue
@@ -93,8 +93,8 @@ def growthPredicion (ldrValue, temp, humidity):
                 weight2 += layer1.T.dot(layer2Value)
                 weight1 += layer0.T.dot(layer1Value)
         chkVal = layer2[0]
-        qq=0
-        print ("Predicted Value:  ", math.ceil(int(chkVal)))
+        print ("Predicted Value:  ", layer2)
+        #print ("Predicted Value:  ", math.ceil(int(chkVal)))
 
         # if predicted value is not greater than the average growth keep a record by increasing effectCount
         '''if (layer2[0] < averageGrowth) or (layer2[0] > averageGrowth):
