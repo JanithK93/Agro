@@ -2,6 +2,7 @@ import numpy as pckg
 import math
 import time
 import pygame
+import os
 
 #from ..growthPrediction import play_audio as play
 
@@ -28,6 +29,7 @@ def growthPredicions (ldrValue, temp, humidity):
     effectCountLightLow = 0
     effectCountHumidityLow = 0
     effectCountTempLow = 0
+
 
     actualGrowthCalculated = 1
 
@@ -92,26 +94,26 @@ def growthPredicions (ldrValue, temp, humidity):
                 # updating weights to reduce the error
                 weight2 += layer1.T.dot(layer2Value)
                 weight1 += layer0.T.dot(layer1Value)
-        chkVal = layer2[0]
-        print ("Predicted Value:  ", layer2)
+
+        print "Predicted Value:  ", float(layer2[0])
         #print ("Predicted Value:  ", math.ceil(int(chkVal)))
 
         # if predicted value is not greater than the average growth keep a record by increasing effectCount
-        '''if (layer2[0] < averageGrowth) or (layer2[0] > averageGrowth):
+        if (layer2[0] < averageGrowth) or (layer2[0] > averageGrowth):
             effectCount += 1
 
             # if effecCount is equal or greater than 3 checks which factor causes the effect to make the warning
-            if effectCount >= 3:
-                light = facts[0]
-                temp = facts[1]
-                humi = facts[2]
+            if effectCount >= 1:
+                light = lightReading
+                temp = temperatureReading
+                humi = humidityReading
 
                 # keep records about each factor
                 if light > averageLight:
                     effectCountLight += 1
 
                     # sound the alarm
-                    if effectCountLight >= 3:
+                    if effectCountLight >= 1:
                         #
                         # Sound the alarm for high intensity
                         #
@@ -120,6 +122,7 @@ def growthPredicions (ldrValue, temp, humidity):
                         pygame.mixer.music.play()
                         while pygame.mixer.music.get_busy() == True:
                             continue
+                        high_light()
 
                         effectCountLight=0
                         effectCount=0
@@ -203,7 +206,7 @@ def growthPredicions (ldrValue, temp, humidity):
                             continue
 
                         effectCountHumidity = 0
-                        effectCount = 0 '''
+                        effectCount = 0
 
     '''except:
         print ("Error occured in taking readings")
@@ -220,8 +223,12 @@ def growthPredicions (ldrValue, temp, humidity):
         while pygame.mixer.music.get_busy() == True:
             continue'''
 
-
-
+def high_light():
+    pygame.mixer.init()
+    pygame.mixer.music.load("../audioFile/Sun_light_intensity_is_high.wav")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy() == True:
+        continue
 
 
 

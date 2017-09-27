@@ -1,4 +1,4 @@
-import RPi.GPIO as GPIO
+'''import RPi.GPIO as GPIO
 import dht11
 import time
 import datetime
@@ -18,5 +18,5 @@ def getTempHumReadings():
 		return  arrayReadings
 		GPIO.cleanup()
 	else:
-		print("invalid")
+		print("invalid")'''
 

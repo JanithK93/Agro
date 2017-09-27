@@ -1,5 +1,5 @@
 #!/usr/local/bin/python
-
+'''
 import RPi.GPIO as GPIO
 import time
 
@@ -30,4 +30,4 @@ def getLDR ():
     except KeyboardInterrupt:
         pass
     finally:
-           GPIO.cleanup()
+           GPIO.cleanup() '''
