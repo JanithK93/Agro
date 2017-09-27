@@ -108,7 +108,7 @@ class Neural_Network(object):
         if(A==[0.96472879]):
             #print("The disease is Fungal Disease \n")
             pygame.mixer.init()
-            pygame.mixer.music.load("C:/py/Fungal_disease.WAV")
+            pygame.mixer.music.load("../audioFile/Fungal_disease.wav")
             pygame.mixer.music.play()
             while pygame.mixer.music.get_busy() == True:
                 continue
@@ -116,7 +116,7 @@ class Neural_Network(object):
 
         elif(A==[0.99822433]):
             pygame.mixer.init()
-            pygame.mixer.music.load("C:/py/Leaf_miner_disease.WAV")
+            pygame.mixer.music.load("../audioFile/Leaf_miner_disease.wav")
             pygame.mixer.music.play()
             while pygame.mixer.music.get_busy() == True:
                 continue
@@ -124,7 +124,7 @@ class Neural_Network(object):
 
         else:
             pygame.mixer.init()
-            pygame.mixer.music.load("C:/py/Bacterial_Disease.WAV")
+            pygame.mixer.music.load("../audioFile/Bacterial_Disease.wav")
             pygame.mixer.music.play()
             while pygame.mixer.music.get_busy() == True:
                 continue
