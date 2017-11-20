@@ -13,7 +13,7 @@ if currentTime== "08 00" or currentTime== "11 00" or currentTime== "13 00" or cu
 
     '''ldrValue = getLDR()
     array=[]
-    array = getTempHumReadings()
+    array = getTempHumReadings() //tocheck
     temp = array[0]
     humidity = array[1]'''
 
