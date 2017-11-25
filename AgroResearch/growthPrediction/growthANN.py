@@ -30,7 +30,7 @@ def growthPredicions (ldrValue, temp, humidity):
     effectCountHumidityLow = 0
     effectCountTempLow = 0
 
-
+    # testing code
     actualGrowthCalculated = 1
 
     a=0
