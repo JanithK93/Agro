@@ -14,7 +14,8 @@ def getTempHumReadings():
 
 	result = instance.read()
 	if result.is_valid():
-		arrayReadings = [result.temperature, result.humidity]
+		#arrayReadings = [result.temperature, result.humidity]
+		arrayReadings = [26,89]
 		return  arrayReadings
 		GPIO.cleanup()
 	else:

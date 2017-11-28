@@ -24,7 +24,8 @@ def getLDR ():
         GPIO.setup(pin_to_circuit, GPIO.IN)
 
     try:
-        ldr = rc_time(pin_to_circuit)
+        #ldr = rc_time(pin_to_circuit)
+        ldr=1895
         return ldr
         #print (ldr)
     except KeyboardInterrupt:
