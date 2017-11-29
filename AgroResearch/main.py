@@ -3,7 +3,6 @@ import time
 #from getLightReadings import getLDR
 #from getHumiTempReadings import getTempHumReadings
 from growthPrediction.growthANN import growthPredicions
-#from AgroResearch.growthPrediction.growth import growthPredicion
 
 currentTime = time.strftime("%H %M")
 autoRun= False

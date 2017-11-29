@@ -4,7 +4,7 @@ import time
 import pygame
 import os
 
-from growthPrediction import play_audio as play
+#from growthPrediction import play_audio as play
 
 def growthPredicions (ldrValue, temp, humidity):
 
