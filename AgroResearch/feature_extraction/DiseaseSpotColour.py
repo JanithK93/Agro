@@ -14,7 +14,7 @@ def  SpotColour (image):
         imgRead1 = cv2.imread(img1, 1)
 
         z1 = imgRead1.reshape((-1, 3))
-        z1 = np.float32(z)
+        z1 = np.float32(z1)
 
         criteria1 = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 20.0)
         K1 = 25
@@ -107,8 +107,8 @@ def  SpotColour (image):
         ## cv2.namedWindow('resized_w03', cv2.WINDOW_NORMAL)
         ## cv2.resizeWindow('resized_w03', 400, 450)
         #
-        #cv2.imshow('resized_w01', imgRead)
-        #cv2.imshow('resized_w02', mask_green)
+        #cv2.imshow('resized_w01', imgRead1)
+        #cv2.imshow('resized_w02', mask_green1)
         ## cv2.imshow('resized_w03', res_maskGreen)
         #cv2.waitKey(5000)
         #cv2.destroyAllWindows()
