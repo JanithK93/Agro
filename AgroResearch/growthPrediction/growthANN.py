@@ -4,7 +4,7 @@ import time
 import pygame
 import os
 
-#from ..growthPrediction import play_audio as play
+from growthPrediction import play_audio as play
 
 def growthPredicions (ldrValue, temp, humidity):
 
@@ -15,8 +15,8 @@ def growthPredicions (ldrValue, temp, humidity):
 
     # Mean value for the growth
     # Sample values are given for the testing purposes
-    averageGrowth = 0.999
-    averageHumidity = 78
+    averageGrowth = 1.2
+    averageHumidity = 82
     averageTemp= 24
     averageLight = 2500
 
@@ -30,12 +30,9 @@ def growthPredicions (ldrValue, temp, humidity):
     effectCountHumidityLow = 0
     effectCountTempLow = 0
 
-
     actualGrowthCalculated = 1
 
-
     try:
-
             def nonlinear(facts, derive = False):
                 if(derive == True):
                     return facts*(1-facts)
@@ -95,7 +92,7 @@ def growthPredicions (ldrValue, temp, humidity):
                     weight2 += layer1.T.dot(layer2Value)
                     weight1 += layer0.T.dot(layer1Value)
 
-            print "Predicted Value:  ", float(layer2[0])
+            print "Predicted Value in squre inches:  ", float(layer2[0])
             #print ("Predicted Value:  ", math.ceil(int(chkVal)))
 
             # if predicted value is not greater than the average growth keep a record by increasing effectCount
@@ -117,15 +114,19 @@ def growthPredicions (ldrValue, temp, humidity):
                             #
                             # Sound the alarm for high intensity
                             #
-                            abPath = os.path.dirname("D:\Git\Agro\AgroResearch")
+                            '''abPath = os.path.dirname("D:\Git\Agro\AgroResearch")
                             wavpath = os.path.join(abPath, 'Sun_light_intensity_is_high.wav')
                             pygame.mixer.init()
                             pygame.mixer.music.load(wavpath)
                             pygame.mixer.music.play()
                             while pygame.mixer.music.get_busy() == True:
+                                continue'''
+                            #high_light()
+                            pygame.mixer.init()
+                            pygame.mixer.music.load("audioFile/Sun_light_intensity_is_high.wav")
+                            pygame.mixer.music.play()
+                            while pygame.mixer.music.get_busy() == True:
                                 continue
-                            high_light()
-
                             effectCountLight=0
                             effectCount=0
 
@@ -138,7 +139,7 @@ def growthPredicions (ldrValue, temp, humidity):
                             # Sound the alarm for low intensity
                             #
                             pygame.mixer.init()
-                            pygame.mixer.music.load("../audioFile/Sun_light_intensity_is_low.wav")
+                            pygame.mixer.music.load("audioFile/Sun_light_intensity_is_low.wav")
                             pygame.mixer.music.play()
                             while pygame.mixer.music.get_busy() == True:
                                 continue
@@ -149,12 +150,12 @@ def growthPredicions (ldrValue, temp, humidity):
                     if  temp > averageTemp:
                         effectCountTemp += 1
 
-                        if effectCountTemp >= 3:
+                        if effectCountTemp >= 1:
                             #
                             # Sound the alarm for high temperature
                             #
                             pygame.mixer.init()
-                            pygame.mixer.music.load("../audioFile/Temperature_is_high.wav")
+                            pygame.mixer.music.load("audioFile/Temperature_is_high.wav")
                             pygame.mixer.music.play()
                             while pygame.mixer.music.get_busy() == True:
                                 continue
@@ -165,12 +166,12 @@ def growthPredicions (ldrValue, temp, humidity):
                     elif temp < averageTemp:
                         effectCountTempLow += 1
 
-                        if effectCountTempLow >= 3:
+                        if effectCountTempLow >= 1:
                             #
                             # Sound the alarm for low temperature
                             #
                             pygame.mixer.init()
-                            pygame.mixer.music.load("../audioFile/Temperature_is_Low.wav")
+                            pygame.mixer.music.load("audioFile/Temperature_is_Low.wav")
                             pygame.mixer.music.play()
                             while pygame.mixer.music.get_busy() == True:
                                 continue
@@ -181,12 +182,12 @@ def growthPredicions (ldrValue, temp, humidity):
                     if humi > averageHumidity:
                         effectCountHumidity += 1
 
-                        if effectCountHumidity >= 3:
+                        if effectCountHumidity >= 1:
                             #
                             # Sound the alarm for high humidity
                             #
                             pygame.mixer.init()
-                            pygame.mixer.music.load("../audioFile/Humidity_is_high.wav")
+                            pygame.mixer.music.load("audioFile/Sun_light_intensity_is_high.wav")
                             pygame.mixer.music.play()
                             while pygame.mixer.music.get_busy() == True:
                                 continue
@@ -197,12 +198,12 @@ def growthPredicions (ldrValue, temp, humidity):
                     elif humi < averageHumidity:
                         effectCountHumidityLow += 1
 
-                        if effectCountHumidityLow >= 3:
+                        if effectCountHumidityLow >= 1:
                             #
                             # Sound the alarm for lo humidity
                             #
                             pygame.mixer.init()
-                            pygame.mixer.music.load("../audioFile/Humidity_is_low.wav")
+                            pygame.mixer.music.load("audioFile/Humidity_is_high.wav")
                             pygame.mixer.music.play()
                             while pygame.mixer.music.get_busy() == True:
                                 continue
@@ -211,7 +212,7 @@ def growthPredicions (ldrValue, temp, humidity):
                             effectCount = 0
 
     except:
-        print ("Error occured in taking readings")
+        '''print ("Error occured in taking readings")
         print ("Sun light :", lightReading)
         print("Humidity :", humidityReading)
         print("Temperature :", temperatureReading)
@@ -223,11 +224,11 @@ def growthPredicions (ldrValue, temp, humidity):
         pygame.mixer.music.load("../audioFile/Error_sensor_readings.wav")
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
-            continue
+            continue'''
 
 def high_light():
     pygame.mixer.init()
-    pygame.mixer.music.load("../audioFile/Sun_light_intensity_is_high.wav")
+    pygame.mixer.music.load("audioFile/Sun_light_intensity_is_high.wav")
     pygame.mixer.music.play()
     while pygame.mixer.music.get_busy() == True:
         continue
