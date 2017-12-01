@@ -3,6 +3,11 @@ import time
 #from getLightReadings import getLDR
 #from getHumiTempReadings import getTempHumReadings
 from growthPrediction.growthANN import growthPredicions
+from featureExtraction.AverageSpotArea import averageSpotArea
+from classifyingDiseases.severity import severityPred
+from featureExtraction.LeafArea import leafArea
+from featureExtraction.DiseaseSpotColour import SpotColour
+from classifyingDiseases.disease import neural
 
 currentTime = time.strftime("%H %M")
 autoRun= False
@@ -35,6 +40,9 @@ if(a==0):
     temp = 27
     humidity =78
 
+    averageSpotArea = 2013757.0
+    leafArea = 1631530.0
+
     growthPredicions(ldrValue, temp, humidity)
-
-
+    severityPred(averageSpotArea,leafArea)
+    SpotColour()
