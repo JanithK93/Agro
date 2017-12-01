@@ -2,17 +2,20 @@ import numpy as np
 import time, sys
 import pygame
 from numpy import array,dot
+
 class NeuralNetwork():
     def __init__(self):
 
-        hidden_layer1 = 5
+        input_layer = 3
+        hidden_layer1 = 3
         hidden_layer2 = 4
+        output_neurones = 1
 
         # assign random weights to matrices in network
         # form at is (no. of nodes in previous layer) x (no. of nodes in following layer)
-        self.w1 = 2 * np.random.random((3,  hidden_layer1)) - 1
+        self.w1 = 2 * np.random.random((input_layer,  hidden_layer1)) - 1
         self.w2 = 2 * np.random.random(( hidden_layer1,  hidden_layer2)) - 1
-        self.w3 = 2 * np.random.random(( hidden_layer2, 1)) - 1
+        self.w3 = 2 * np.random.random(( hidden_layer2, output_neurones)) - 1
 
         np.random.seed(1)
 
@@ -29,48 +32,48 @@ class NeuralNetwork():
             # pass training set through our neural network
             # a2 means the activations fed to second layer
 
-            a2 = self.__sigmoid(np.dot(X, self.w1))
-            a3 = self.__sigmoid(np.dot(a2, self.w2))
-            output = self.__sigmoid(np.dot(a3, self.w3))
+            hidden2_activation = self.__sigmoid(np.dot(X, self.w1))
+            hidden3_activation = self.__sigmoid(np.dot( hidden2_activation, self.w2))
+            output = self.__sigmoid(np.dot( hidden3_activation, self.w3))
 
             print(output)
             # calculate 'error'
-            del4 = (Y - output) * self.__sigmoid_derivative(output)
+            error_1 = (Y - output) * self.__sigmoid_derivative(output)
             #print("error in layer 4")
             #print(del4)
 
-            if del4.all() > 0.0001:
+            if error_1.any() > 0.0001:
                 # find 'errors' in each layer
-                del3 = np.dot(self.w3, del4.T) * (self.__sigmoid_derivative(a3).T)
-                del2 = np.dot(self.w2, del3) * (self.__sigmoid_derivative(a2).T)
+                error_2 = np.dot(self.w3, error_1.T) * (self.__sigmoid_derivative( hidden3_activation).T)
+                error_3 = np.dot(self.w2, error_2) * (self.__sigmoid_derivative( hidden2_activation).T)
 
-                # get adjustments (gradients) for each layer
-                adjustment3 = np.dot(a3.T, del4)
-                adjustment2 = np.dot(a2.T, del3.T)
-                adjustment1 = np.dot(X.T, del2.T)
 
-                # adjust weights accordingly
-                self.w1 += adjustment1
-                self.w2 += adjustment2
-                self.w3 += adjustment3
+                update_1 = np.dot( hidden3_activation.T, error_1)
+                update_2 = np.dot( hidden2_activation.T,error_2.T)
+                update_3 = np.dot(X.T, error_3.T)
+
+
+                self.w1 += update_3
+                self.w2 += update_2
+                self.w3 += update_1
 
         print(output)
 
     def forward_pass(self, input):
         spot_colour = input[0]
         # pass our inputs through our neural network
-        a2 = self.__sigmoid(np.dot(input, self.w1))
-        a3 = self.__sigmoid(np.dot(a2, self.w2))
-        output = self.__sigmoid(np.dot(a3, self.w3))
-        print("Predicted output :")
+        hidden2_activation = self.__sigmoid(np.dot(input, self.w1))
+        hidden3_activation = self.__sigmoid(np.dot( hidden2_activation, self.w2))
+        output = self.__sigmoid(np.dot( hidden3_activation, self.w3))
+
         print(output)
-        roundedOutput = round(output,0)
-        print("Predicted ouput approximately closer to :")
-        print(roundedOutput)
+        round_off_val = round(output,0)
+
+        print(round_off_val)
 
         #If output closer to 1, warn about the disease occurence
 
-        if roundedOutput == 1.0:
+        if round_off_val == 1.0:
             #checking which weather condition causes for a disease to occur and warn about the condition.
             pygame.mixer.init()
             pygame.mixer.music.load( "C:/Users/Toshiba/Desktop/Agro/AgroResearch/audioFile/This_is_Early_Leaf_Spot_Disease_Reduce_the_humidit.wav")
@@ -78,14 +81,14 @@ class NeuralNetwork():
             while pygame.mixer.music.get_busy() == True:
                 continue
 
-        elif roundedOutput == 2.0:
+        elif round_off_val == 2.0:
             pygame.mixer.init()
             pygame.mixer.music.load("C:/Users/Toshiba/Desktop/Agro/AgroResearch/audioFile/This_is_bacterial_wilt_Use_fungicides_containing_p.wav")
             pygame.mixer.music.play()
             while pygame.mixer.music.get_busy() == True:
                 continue
 
-        elif roundedOutput == 3.0:
+        elif round_off_val == 3.0:
             pygame.mixer.init()
             pygame.mixer.music.load("C:/Users/Toshiba/Desktop/Agro/AgroResearch/audioFile/This_is_fungal_disease_Move_the_plant_to_a_cooler_place.wav")
             pygame.mixer.music.play()
