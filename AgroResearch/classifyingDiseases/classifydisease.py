@@ -103,3 +103,31 @@ for j in xrange(60000):
 print "Output After Training:"
 
 print l2
+
+if(l2 == 1):
+    pygame.mixer.init()
+    pygame.mixer.music.load("audioFile/This_is_Early_Leaf_Spot_Disease_Reduce_the_humidit.wav")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy() == True:
+        continue
+
+elif (l2 == 1):
+    pygame.mixer.init()
+    pygame.mixer.music.load("audioFile/This_is_bacterial_wilt_Use_fungicides_containing_p.wav")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy() == True:
+        continue
+
+elif(l2 == 3):
+    pygame.mixer.init()
+    pygame.mixer.music.load("audioFile/This_is_fungal_disease_Move_the_plant_to_a_cooler_.wav")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy() == True:
+        continue
+
+else:
+    pygame.mixer.init()
+    pygame.mixer.music.load("audioFile/Sorry_The_disease_cannot_be_clearly_identified_.wav")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy() == True:
+        continue
