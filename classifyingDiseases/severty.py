@@ -4,21 +4,19 @@ import cv2
 from pygame.locals import *
 
 
-da = 10
-ga = 20
+diseased_area = 10
+green_area = 20
 
-ta = da + ga
 
-dp = (da / ta)*100
 
-if(da > ga):
+if(diseased_area > green_area):
     pygame.mixer.init()
     pygame.mixer.music.load("audioFile/Severity_is_high.wav")
     pygame.mixer.music.play()
     while pygame.mixer.music.get_busy() == True:
         continue
 
-elif(da < ga):
+elif(diseased_area  <  green_area):
     pygame.mixer.init()
     pygame.mixer.music.load("audioFile/Severity_is_low.wav")
     pygame.mixer.music.play()
