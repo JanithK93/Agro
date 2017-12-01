@@ -1,5 +1,5 @@
 import time
-
+import numpy as np
 #from getLightReadings import getLDR
 #from getHumiTempReadings import getTempHumReadings
 from growthPrediction.growthANN import growthPredicions
@@ -42,7 +42,8 @@ if(a==0):
 
     averageSpotArea = 2013757.0
     leafArea = 1631530.0
+    SpotColour = np.array([149.73122173334914, 107.11454451521105, 199.46005456416424])
 
     growthPredicions(ldrValue, temp, humidity)
     severityPred(averageSpotArea,leafArea)
-    SpotColour()
+    neural(SpotColour)
