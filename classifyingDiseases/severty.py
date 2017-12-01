@@ -20,14 +20,14 @@ if(da > ga):
 
 elif(da < ga):
     pygame.mixer.init()
-    pygame.mixer.music.load("audioFile/Severity_is_moderate.wav")
+    pygame.mixer.music.load("audioFile/Severity_is_low.wav")
     pygame.mixer.music.play()
     while pygame.mixer.music.get_busy() == True:
         continue
 
 else:
     pygame.mixer.init()
-    pygame.mixer.music.load("C:/Users/Toshiba/PycharmProjects/pythonneural/audioFile/Severity_is_moderate.wav")
+    pygame.mixer.music.load("audioFile/Severity_is_moderate.wav")
     pygame.mixer.music.play()
     while pygame.mixer.music.get_busy() == True:
         continue
