@@ -2,105 +2,113 @@ import numpy as np
 import time, sys
 import pygame
 from numpy import array,dot
+from pygame.locals import *
+
+
+def neural(SpotColour):
+    rgb = SpotColour
+
 
 class NeuralNetwork():
-    def __init__(self):
-
-        input_layer = 3
-        hidden_layer1 = 3
-        hidden_layer2 = 4
-        output_neurones = 1
-
-        # assign random weights to matrices in network
-        # form at is (no. of nodes in previous layer) x (no. of nodes in following layer)
-        self.w1 = 2 * np.random.random((input_layer,  hidden_layer1)) - 1
-        self.w2 = 2 * np.random.random(( hidden_layer1,  hidden_layer2)) - 1
-        self.w3 = 2 * np.random.random(( hidden_layer2, output_neurones)) - 1
-
-        np.random.seed(1)
-
-    def __sigmoid(self, s):
-        return 1 / (1 + np.exp(-s))
 
 
-    def __sigmoid_derivative(self, s):
-        return s * (1 - s)
+        def __init__(self):
 
-    # train neural network, adusting synaptic weights each time
-    def train(self,X, Y,iterations):
-        for iteration in xrange(iterations):
-            # pass training set through our neural network
-            # a2 means the activations fed to second layer
+            input_layer = 3
+            hidden_layer1 = 3
+            hidden_layer2 = 4
+            output_neurones = 1
 
-            hidden2_activation = self.__sigmoid(np.dot(X, self.w1))
+            # assign random weights to matrices in network
+            # form at is (no. of nodes in previous layer) x (no. of nodes in following layer)
+            self.w1 = 2 * np.random.random((input_layer,  hidden_layer1)) - 1
+            self.w2 = 2 * np.random.random(( hidden_layer1,  hidden_layer2)) - 1
+            self.w3 = 2 * np.random.random(( hidden_layer2, output_neurones)) - 1
+
+            np.random.seed(1)
+
+        def __sigmoid(self, s):
+            return 1 / (1 + np.exp(-s))
+
+
+        def __sigmoid_derivative(self, s):
+            return s * (1 - s)
+
+        # train neural network, adusting synaptic weights each time
+        def train(self,X, Y,iterations):
+            for iteration in xrange(iterations):
+                # pass training set through our neural network
+                # a2 means the activations fed to second layer
+
+                hidden2_activation = self.__sigmoid(np.dot(X, self.w1))
+                hidden3_activation = self.__sigmoid(np.dot( hidden2_activation, self.w2))
+                output = self.__sigmoid(np.dot( hidden3_activation, self.w3))
+
+                print(output)
+                # calculate 'error'
+                error_1 = (Y - output) * self.__sigmoid_derivative(output)
+                #print("error in layer 4")
+                #print(del4)
+
+                if error_1.any() > 0.0001:
+                    # find 'errors' in each layer
+                    error_2 = np.dot(self.w3, error_1.T) * (self.__sigmoid_derivative( hidden3_activation).T)
+                    error_3 = np.dot(self.w2, error_2) * (self.__sigmoid_derivative( hidden2_activation).T)
+
+
+                    update_1 = np.dot( hidden3_activation.T, error_1)
+                    update_2 = np.dot( hidden2_activation.T,error_2.T)
+                    update_3 = np.dot(X.T, error_3.T)
+
+
+                    self.w1 += update_3
+                    self.w2 += update_2
+                    self.w3 += update_1
+
+            print(output)
+
+        def forward_pass(self, input):
+            spot_colour = input[0]
+            # pass our inputs through our neural network
+            hidden2_activation = self.__sigmoid(np.dot(input, self.w1))
             hidden3_activation = self.__sigmoid(np.dot( hidden2_activation, self.w2))
             output = self.__sigmoid(np.dot( hidden3_activation, self.w3))
 
             print(output)
-            # calculate 'error'
-            error_1 = (Y - output) * self.__sigmoid_derivative(output)
-            #print("error in layer 4")
-            #print(del4)
+            round_off_val = round(output,0)
 
-            if error_1.any() > 0.0001:
-                # find 'errors' in each layer
-                error_2 = np.dot(self.w3, error_1.T) * (self.__sigmoid_derivative( hidden3_activation).T)
-                error_3 = np.dot(self.w2, error_2) * (self.__sigmoid_derivative( hidden2_activation).T)
+            print(round_off_val)
 
 
-                update_1 = np.dot( hidden3_activation.T, error_1)
-                update_2 = np.dot( hidden2_activation.T,error_2.T)
-                update_3 = np.dot(X.T, error_3.T)
 
+            if round_off_val == 1.0:
 
-                self.w1 += update_3
-                self.w2 += update_2
-                self.w3 += update_1
+                pygame.mixer.init()
+                pygame.mixer.music.load( "C:/Users/Toshiba/Desktop/Agro/AgroResearch/audioFile/This_is_Early_Leaf_Spot_Disease_Reduce_the_humidit.wav")
+                pygame.mixer.music.play()
+                while pygame.mixer.music.get_busy() == True:
+                    continue
 
-        print(output)
+            elif round_off_val == 2.0:
+                pygame.mixer.init()
+                pygame.mixer.music.load("C:/Users/Toshiba/Desktop/Agro/AgroResearch/audioFile/This_is_bacterial_wilt_Use_fungicides_containing_p.wav")
+                pygame.mixer.music.play()
+                while pygame.mixer.music.get_busy() == True:
+                    continue
 
-    def forward_pass(self, input):
-        spot_colour = input[0]
-        # pass our inputs through our neural network
-        hidden2_activation = self.__sigmoid(np.dot(input, self.w1))
-        hidden3_activation = self.__sigmoid(np.dot( hidden2_activation, self.w2))
-        output = self.__sigmoid(np.dot( hidden3_activation, self.w3))
+            elif round_off_val == 3.0:
+                pygame.mixer.init()
+                pygame.mixer.music.load("C:/Users/Toshiba/Desktop/Agro/AgroResearch/audioFile/This_is_fungal_disease_Move_the_plant_to_a_cooler_place.wav")
+                pygame.mixer.music.play()
+                while pygame.mixer.music.get_busy() == True:
+                    continue
 
-        print(output)
-        round_off_val = round(output,0)
-
-        print(round_off_val)
-
-        #If output closer to 1, warn about the disease occurence
-
-        if round_off_val == 1.0:
-            #checking which weather condition causes for a disease to occur and warn about the condition.
-            pygame.mixer.init()
-            pygame.mixer.music.load( "C:/Users/Toshiba/Desktop/Agro/AgroResearch/audioFile/This_is_Early_Leaf_Spot_Disease_Reduce_the_humidit.wav")
-            pygame.mixer.music.play()
-            while pygame.mixer.music.get_busy() == True:
-                continue
-
-        elif round_off_val == 2.0:
-            pygame.mixer.init()
-            pygame.mixer.music.load("C:/Users/Toshiba/Desktop/Agro/AgroResearch/audioFile/This_is_bacterial_wilt_Use_fungicides_containing_p.wav")
-            pygame.mixer.music.play()
-            while pygame.mixer.music.get_busy() == True:
-                continue
-
-        elif round_off_val == 3.0:
-            pygame.mixer.init()
-            pygame.mixer.music.load("C:/Users/Toshiba/Desktop/Agro/AgroResearch/audioFile/This_is_fungal_disease_Move_the_plant_to_a_cooler_place.wav")
-            pygame.mixer.music.play()
-            while pygame.mixer.music.get_busy() == True:
-                continue
-
-        else:
-            pygame.mixer.init()
-            pygame.mixer.music.load("C:/Users/Toshiba/Desktop/Agro/AgroResearch/audioFile/Sorry_The_disease_cannot_be_clearly_identified_.wav")
-            pygame.mixer.music.play()
-            while pygame.mixer.music.get_busy() == True:
-                continue
+            else:
+                pygame.mixer.init()
+                pygame.mixer.music.load("C:/Users/Toshiba/Desktop/Agro/AgroResearch/audioFile/Sorry_The_disease_cannot_be_clearly_identified_.wav")
+                pygame.mixer.music.play()
+                while pygame.mixer.music.get_busy() == True:
+                    continue
 
 if __name__ == "__main__":
 	# initialise single neuron neural network
@@ -132,10 +140,9 @@ if __name__ == "__main__":
 
 	Y = array([[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[2],[3],[3],[3],[3],[3],[3],[3],[3],[3],[3],[3],[3],[3],[3],[3]])
 
-
 	neural_network.train(X, Y, 10000)
 
 
-	# test with new input
+# test with new input
 
 	print neural_network.forward_pass(array([127.569964575311,93.3223376144609,198.428596016940]))
