@@ -145,4 +145,4 @@ if __name__ == "__main__":
 
 # test with new input
 
-	print neural_network.forward_pass(array([127.569964575311,93.3223376144609,198.428596016940]))
+	print neural_network.forward_pass(array([149.73122173334914, 107.11454451521105, 199.46005456416424]))
